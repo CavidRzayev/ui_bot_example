@@ -1,0 +1,120 @@
+<!-- chat/templates/chat/room.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>AiBot Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</head>
+<style>
+    
+    #button{
+        display:block;
+        margin:20px auto;
+        padding:10px 30px;
+        background-color:#eee;
+        border:solid #ccc 1px;
+        cursor: pointer;
+      }
+      #overlay{	
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height:100%;
+        display: none;
+        background: rgba(0,0,0,0.6);
+      }
+      .cv-spinner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;  
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px #ddd solid;
+        border-top: 4px #2e93e6 solid;
+        border-radius: 50%;
+        animation: sp-anime 0.8s infinite linear;
+      }
+      @keyframes sp-anime {
+        100% { 
+          transform: rotate(360deg); 
+        }
+      }
+      .is-hide{
+        display:none;
+      }
+    
+</style>
+<body>
+    <div id="overlay">
+        <div class="cv-spinner">
+          <span class="spinner"></span>
+        </div>
+      </div>
+    <form class="form-signin"  role="form">
+        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+        <input type="text" id="inputUsername" name="questions" class="form-control" placeholder="questions" required autofocus size="100">
+        <button class="btn btn-lg btn-primary btn-block" type="button">button</button>
+		</form>   
+    <script>
+        $(function(){
+            $(document).ajaxSend(function() {
+                $("#overlay").fadeIn(300);　
+              });
+            
+            $('button').click(function(){
+                var questions = $('#inputUsername').val();
+                var pass = $('#inputPassword').val();
+                $.ajax({
+                    headers: {
+                        "Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"
+                      },
+                    url: 'http://3.72.77.23:8080/api',
+                    data: $('form').serialize(),
+                    type: 'POST',
+                    success: function(data){
+                        var data2 = JSON.parse(data);
+                        alert(data2.message)
+                    }
+                  }).done(function() {
+                    setTimeout(function(){
+                      $("#overlay").fadeOut(300);
+                    },500);
+                  });
+                });	
+                
+        });
+        {% comment %} function login() {
+            // Form fields, see IDs above
+            var data = new FormData();
+            const params = {
+                questions: document.querySelector('#questions').value,
+            }
+            data.append("question","saal")
+    
+            const http = new XMLHttpRequest()
+            http.open('POST', 'http://3.72.77.23:8080/api',true)
+            http.setRequestHeader('Token', "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv")
+            http.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+            http.send(JSON.stringify(params)) 
+            http.onload = function() {
+                // Do whatever with response
+                alert(http.responseText)
+            }
+        } {% endcomment %}
+    </script>
+    <script>
+        $body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
+    </script>
+</body>
+</html>
