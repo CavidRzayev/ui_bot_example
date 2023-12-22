@@ -1,0 +1,182 @@
+{% load static  %}
+
+{% include  "headers.html" %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <style>
+    /*#endregion Alert*/
+    #overlay{
+      position: fixed;
+      top: 0;
+      z-index: 0;
+      width: 24%;
+      height:0%;
+      display: none;
+      background: rgba(0,0,0,0.6);
+    }
+    .cv-spinner {
+      height: 1400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px #ddd solid;
+      border-top: 4px #2e93e6 solid;
+      border-radius: 50%;
+      animation: sp-anime 0.8s infinite linear;
+      
+    }
+    @keyframes sp-anime {
+      100% { 
+        transform: rotate(360deg); 
+      }
+    }
+    .is-hide{
+      display:none;
+    }
+    
+  </style>
+<body>
+  <!-- Layout -->
+  <div class="layout">
+    {% include "navbar.html" %}
+    {% include "gpt_sidebar.html" %}
+    {% include "gpt_chat.html" %}
+  </div>
+  {% include "js.html" %}
+
+  <div id="overlay">
+    <div class="cv-spinner">
+      <span class="spinner"></span>
+    </div>
+  </div>
+  
+
+</body>
+<script>
+
+</script>
+<script>
+  
+  $(function(){
+      $(document).ajaxSend(function() {
+          $("#overlay").fadeIn(300);　
+        });
+        $("#pills-tab li").click(function() {
+          if (!$(this).hasClass("active")) {
+            $("#pills-tab li.active").removeClass("active")
+            $(this).addClass("active")
+            let pass = $(this).find("a").html();
+            console.log(pass)
+          }
+        })
+      $('button').click(function(){
+          var questions = $('#inputUsername').val();
+          
+          
+          var html2 = 
+          `
+                  <div class="message self">
+                    <div class="message-wrap">
+                        <div class="message-item">
+                            <div class="message-content">
+                                <span>${questions}</span>
+                            </div>
+                          
+                        </div>
+                      
+                    </div>
+                    <div class="message-info">
+                       
+                    </div>
+                </div>
+                  `
+          
+          $('#content-loader').append( html2 );
+          
+          
+          $.ajax({
+              headers: {
+                  "Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"
+                },
+              url: "{% url 'gtp' %}",
+              data: $('form').serialize(),
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              type: 'POST',
+              success: function(data){
+                  var data2 = data
+                 
+                  var html = 
+                  `
+                  <div class="message">
+                    <div class="message-wrap">
+                        <div class="message-item">
+                            <div class="message-content">
+                                <span id="input">${data2.message}</span>
+                            </div>
+                         
+                        </div>
+                    </div>
+                    <div class="message-info">
+                        <div class="avatar avatar-sm">
+                            <span class="avatar-label bg-soft-primary text-primary fs-6">AB</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">GPT</h6>
+                            <small class="text-muted">
+                                {% comment %} <i class="ri-check-double-line align-bottom text-success fs-5"></i> {% endcomment %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                  `
+                  ;
+                $('#content-loader').append( html );
+              }
+            }).done(function() {
+              setTimeout(function(){
+                $("#overlay").fadeOut(300);
+              },500);
+            });
+          });	
+          
+  });
+</script>
+<script>
+  $body = $("body");
+
+    $(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+    ajaxStop: function() { $body.removeClass("loading"); }    
+    });
+    </script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    
+    <script>
+    var input = document.getElementById("inputUsername");
+
+    // Execute a function when the user presses a key on the keyboard
+    input.addEventListener("keypress", function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("myBtn").click();
+    }
+    });
+    </script>
+    <script>
+      
+    $('button_clear').click(function(){
+        $('.clearable').clearSearch()
+        });	
+</script>
+<script>
+  console.log($(this).find("a").html())
+</script>
+</html>

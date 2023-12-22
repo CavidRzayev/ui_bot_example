@@ -1,0 +1,377 @@
+{% load static  %}
+
+{% include  "headers.html" %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <style>
+    
+    #overlay{
+      position: fixed;
+      top: 0;
+      z-index: 0;
+      width: 24%;
+      height:0%;
+      display: none;
+      background: rgba(0,0,0,0.6);
+    }
+    .cv-spinner {
+      height: 1400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px #ddd solid;
+      border-top: 4px #2e93e6 solid;
+      border-radius: 50%;
+      animation: sp-anime 0.8s infinite linear;
+      
+    }
+    @keyframes sp-anime {
+      100% { 
+        transform: rotate(360deg); 
+      }
+    }
+    .is-hide{
+      display:none;
+    }
+    
+
+  </style>
+  <style>
+    body {
+       background-color: #3e6b61;
+    }
+
+    .is-typing {
+       margin-top: 90px;
+       width: 85px;
+       justify-content: space-around;
+       display: flex;
+    }
+
+    .jump1,
+    .jump2,
+    .jump3,
+    .jump4,
+    .jump5 {
+       width: 10px;
+       height: 10px;
+       border-radius: 100%;
+       background-color: gray;
+    }
+
+    .jump1 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.1s;
+    }
+
+    .jump2 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.2s;
+    }
+
+    .jump3 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.3s;
+    }
+
+    .jump4 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.4s;
+    }
+
+    .jump5 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 1.5s;
+    }
+
+  @keyframes typing {
+   0% {
+      transform: translateY(0px);
+   }
+
+   25% {
+      transform: translateY(0px);
+   }
+
+   35% {
+      transform: translateY(15px);
+   }
+
+   45% {
+      transform: translateY(0px);
+   }
+
+   60% {
+      transform: translateY(-15px);
+   }
+
+   75% {
+        background-color: white;
+      transform: translateY(0px);
+   }
+
+   100% {
+      transform: translateY(0px);
+   }
+}
+ </style>
+  <style>
+    #typing-indicator {
+      $ti-color-bg: #E6E7ED;
+      background-color: $ti-color-bg;
+      will-change: transform;
+      width: auto;
+      border-radius: 50px;
+      padding: 20px;
+      display: table;
+      margin: 0 auto;
+      position: relative;
+      animation: 2s bulge infinite ease-out;
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: -2px;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background-color: $ti-color-bg;
+      }
+      &::after {
+        height: 10px;
+        width: 10px;
+        left: -10px;
+        bottom: -10px;
+      }
+      .is-hide{
+        display:none;
+      }
+      span {
+        height: 15px;
+        width: 15px;
+        float: left;
+        margin: 0 1px;
+        background-color: #9E9EA1;
+        display: block;
+        border-radius: 50%;
+        opacity: 0.4;
+        @for $i from 1 through 3 {
+          &:nth-of-type(#{$i}) {
+            animation: 1s blink infinite ($i * .3333s);
+          }
+        }
+      }
+    }
+    
+    @keyframes blink {
+      50% {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes bulge {
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+  </style>
+<body>
+  <!-- Layout -->
+  <div class="layout">
+    {% include "navbar.html" %}
+    {% include "sidebar.html" %}
+    {% include "chat.html" %}
+  </div>
+  {% include "js.html" %}
+
+  
+
+</body>
+<script>
+    function CustomAlert(){
+      this.alert = function(message,title){
+        document.body.innerHTML = document.body.innerHTML + '<div id="dialogoverlay"></div><div id="dialogbox" class="slit-in-vertical"><div><div id="dialogboxhead"></div><div id="dialogboxbody"></div><div id="dialogboxfoot"></div></div><div id="dialogboxfoot2"></div></div></div>';
+    
+        let dialogoverlay = document.getElementById('dialogoverlay');
+        let dialogbox = document.getElementById('dialogbox');
+        
+        let winH = window.innerHeight;
+        dialogoverlay.style.height = winH+"px";
+        
+        dialogbox.style.top = "300px";
+        dialogoverlay.style.background = "#00ffff00";
+        dialogoverlay.style.display = "block";
+        dialogbox.style.display = "block";
+  
+        
+        document.getElementById('dialogboxhead').style.display = 'block';
+    
+        if(typeof title === 'undefined') {
+          document.getElementById('dialogboxhead').style.display = 'none';
+        } else {
+          document.getElementById('dialogboxhead').innerHTML = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i> '+ title;
+        }
+        document.getElementById('dialogboxbody').innerHTML = message;
+        document.getElementById('dialogboxfoot').innerHTML = '<button class="pure-material-button-contained active" onclick="customAlert.ok()">Bəli</button>';
+      }
+      
+      this.ok = function(){
+        document.getElementById('dialogbox').style.display = "none";
+        document.getElementById('dialogoverlay').style.display = "none";
+      }
+    }
+    
+    let customAlert = new CustomAlert();
+    var i = 0,
+    cart = {
+      car: 1,
+     
+    },
+    arr = Object.keys(cart);
+  
+  
+  
+  </script>
+<script>
+    function debounce(callback, timeout, _this) {
+        var timer;
+        return function(e) {
+            var _that = this;
+            if (timer)
+                clearTimeout(timer);
+            timer = setTimeout(function() { 
+                callback.call(_this || _that, e);
+            }, timeout);
+        }
+    }
+    var userAction = debounce(function(e) {
+      customAlert.alert('Davam etmek isdeyirsinizmi ?')
+    }, 5000);
+</script>
+<script>
+  
+  $(function(){
+      $(document).ajaxSend(function() {
+          $("#overlay").fadeIn(300);　
+        });
+      
+      $('#sendButton').click(function(){
+          var questions = $('#inputUsername').val();
+          console.log(questions)
+          var pass = $('#inputPassword').val();
+          $("#pills-tab li").click(function() {
+            if (!$(this).hasClass("active")) {
+              $("#pills-tab li.active").removeClass("active")
+              $(this).addClass("active")
+              console.log($(this).find("a").html())
+            }
+          })
+          var html2 = 
+          `
+                  <div class="message self">
+                    <div class="message-wrap">
+                        <div class="message-item">
+                            <div class="message-content">
+                                <span>${questions}</span>
+                            </div>
+                          
+                        </div>
+                      
+                    </div>
+                    <div class="message-info">
+                       
+                    </div>
+                </div>
+                  `
+          
+          $('#content-loader').append( html2 );
+          
+          
+          $.ajax({
+              headers: {
+                  "Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"
+                },
+              url: "{% url 'save' %}",
+              data: $('form').serialize(),
+              datatype: 'json',
+              
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              type: 'POST',
+              success: function(data){
+                  console.log(data)
+                  var data2 = data
+                 
+                  var html = 
+                  `
+                  <div class="message">
+                    <div class="message-wrap">
+                        <div class="message-item">
+                            <div class="message-content">
+                                <span id="input">${data2.message} :  <a target="_blank" rel="noopener noreferrer" href=${data2.link}> Ətrafli məlumat üçün click edin </a></span>
+                            </div>
+                         
+                        </div>
+                    </div>
+                    <div class="message-info">
+                        <div class="avatar avatar-sm">
+                            <span class="avatar-label bg-soft-primary text-primary fs-6">AB</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">ABB Aikhan</h6>
+                            <small class="text-muted">
+                                {% comment %} <i class="ri-check-double-line align-bottom text-success fs-5"></i> {% endcomment %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                  `
+                  ;
+                $('#content-loader').append( html );
+              }
+            }).done(function() {
+              setTimeout(function(){
+                $("#overlay").fadeOut(300);
+              },500);
+            });
+          });	
+          
+  });
+</script>
+
+<script>
+  $body = $("body");
+
+    $(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+    ajaxStop: function() { $body.removeClass("loading"); }    
+    });
+    </script>
+    
+    <script>
+    var input = document.getElementById("inputUsername");
+
+    input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("myBtn").click();
+    }
+    });
+    </script>
+    <script>
+      
+    $('button_clear').click(function(){
+        $('.clearable').clearSearch()
+        });	
+</script>
+<script>
+  console.log($(this).find("a").html())
+  $(".main").addClass("main-visible")
+</script>
+</html>

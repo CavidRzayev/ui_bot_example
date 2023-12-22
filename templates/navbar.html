@@ -1,0 +1,70 @@
+{% load static %}
+<div class="navigation navbar border-end h-100 py-6">
+    <!-- Logo -->
+   
+    <!-- Logo -->
+
+    <!-- Nav -->
+    <ul class="nav nav-pills" role="tablist">
+        <!-- Create chat -->
+        {% comment %} <li class="nav-item mt-xl-auto mb-5" role="presentation">
+            <a class="nav-link" data-bs-toggle="pill" href="#create-chat-tab" role="tab" aria-selected="false" title="Create chat">
+                <i class="ri-quill-pen-line"></i>
+            </a>
+        </li> {% endcomment %}
+        <!-- Create chat -->
+
+        <!-- Friends -->
+        {% comment %} <li class="nav-item mb-5" role="presentation">
+            <a class="nav-link" data-bs-toggle="pill" href="#friends-tab" role="tab" aria-selected="false" title="Friends">
+                <i class="ri-group-line"></i>
+            </a>
+        </li> {% endcomment %}
+        <!-- Friends -->
+
+        <!-- Chats -->
+        {% comment %} <li class="nav-item mb-5" role="presentation">
+            <a class="nav-link active" data-bs-toggle="pill" href="#chats-tab" role="tab" aria-selected="true" title="Chats">
+                <i class="ri-chat-3-line"></i>
+            </a>
+        </li> {% endcomment %}
+        <li class="nav-item mb-5" role="presentation">
+            <a class="nav-link active" href="{% url 'logout' %}" >
+                <i class="ri-logout-box-line"></i>
+            </a>
+        </li>
+        <!-- Chats -->
+        <li>
+        <!-- Notifications -->
+       
+        </li>
+        <!-- Notifications -->
+
+        <!-- Settings -->
+        {% comment %} <li class="nav-item mb-5" role="presentation">
+            <a class="nav-link" data-bs-toggle="pill" href="#settings-tab" role="tab" aria-selected="false" title="Settings">
+                <i class="ri-settings-4-line"></i>
+            </a>
+        </li>
+        <!-- Settings -->
+
+        <!-- Demo -->
+        <li class="nav-item mt-xl-auto mb-5" role="presentation">
+            <a class="nav-link" data-bs-toggle="pill" href="#demo-tab" role="tab" aria-selected="false" title="Demo">
+                <i class="ri-stack-line"></i>
+            </a>
+        </li> {% endcomment %}
+        <!-- Demo -->
+
+        <!-- Avatar -->
+        {% comment %} <li class="nav-item" role="presentation">
+            <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modal-account" title="Account">
+                <div class="avatar avatar-online avatar-sm">
+                    <span class="avatar-label bg-soft-success text-success fs-6">JD</span>
+                </div>
+            </a>
+        </li> {% endcomment %}
+        <!-- Avatar -->
+    </ul>
+    <!-- Nav -->
+</div>

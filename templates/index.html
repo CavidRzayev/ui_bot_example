@@ -1,251 +1,609 @@
-<!-- chat/templates/chat/room.html -->
-<!DOCTYPE html>
-<html>
+{% load static  %}
+
+{% include  "headers.html" %}
 <head>
-    <meta charset="utf-8"/>
-    <title>AiBot Test</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    rel="stylesheet"
-  />
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    rel="stylesheet"
-  />
-  <!-- MDB -->
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
-    rel="stylesheet"
-  />
-  
-</head>
-<style>
-    #chat1 .form-outline .form-control~.form-notch div {
-        pointer-events: none;
-        border: 1px solid;
-        border-color: #eee;
-        box-sizing: border-box;
-        background: transparent;
-        }
-        
-        #chat1 .form-outline .form-control~.form-notch .form-notch-leading {
-        left: 0;
-        top: 0;
-        height: 100%;
-        border-right: none;
-        border-radius: .65rem 0 0 .65rem;
-        }
-        
-        #chat1 .form-outline .form-control~.form-notch .form-notch-middle {
-        flex: 0 0 auto;
-        max-width: calc(100% - 1rem);
-        height: 100%;
-        border-right: none;
-        border-left: none;
-        }
-        
-        #chat1 .form-outline .form-control~.form-notch .form-notch-trailing {
-        flex-grow: 1;
-        height: 100%;
-        border-left: none;
-        border-radius: 0 .65rem .65rem 0;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-notch .form-notch-leading {
-        border-top: 0.125rem solid #39c0ed;
-        border-bottom: 0.125rem solid #39c0ed;
-        border-left: 0.125rem solid #39c0ed;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-notch .form-notch-leading,
-        #chat1 .form-outline .form-control.active~.form-notch .form-notch-leading {
-        border-right: none;
-        transition: all 0.2s linear;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-notch .form-notch-middle {
-        border-bottom: 0.125rem solid;
-        border-color: #39c0ed;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-notch .form-notch-middle,
-        #chat1 .form-outline .form-control.active~.form-notch .form-notch-middle {
-        border-top: none;
-        border-right: none;
-        border-left: none;
-        transition: all 0.2s linear;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-notch .form-notch-trailing {
-        border-top: 0.125rem solid #39c0ed;
-        border-bottom: 0.125rem solid #39c0ed;
-        border-right: 0.125rem solid #39c0ed;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-notch .form-notch-trailing,
-        #chat1 .form-outline .form-control.active~.form-notch .form-notch-trailing {
-        border-left: none;
-        transition: all 0.2s linear;
-        }
-        
-        #chat1 .form-outline .form-control:focus~.form-label {
-        color: #39c0ed;
-        }
-        
-        #chat1 .form-outline .form-control~.form-label {
-        color: #bfbfbf;
-        }
-    #button{
-        display:block;
-        margin:20px auto;
-        padding:10px 30px;
-        background-color:#eee;
-        border:solid #ccc 1px;
-        cursor: pointer;
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <style>
+    @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
+/* ---------------Animation---------------- */
+
+.slit-in-vertical {
+	-webkit-animation: slit-in-vertical 0.45s ease-out both;
+	        animation: slit-in-vertical 0.45s ease-out both;
+}
+
+@-webkit-keyframes slit-in-vertical {
+  0% {
+    -webkit-transform: translateZ(-800px) rotateY(90deg);
+            transform: translateZ(-800px) rotateY(90deg);
+    opacity: 0;
+  }
+  54% {
+    -webkit-transform: translateZ(-160px) rotateY(87deg);
+            transform: translateZ(-160px) rotateY(87deg);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateZ(0) rotateY(0);
+            transform: translateZ(0) rotateY(0);
+  }
+}
+@keyframes slit-in-vertical {
+  0% {
+    -webkit-transform: translateZ(-800px) rotateY(90deg);
+            transform: translateZ(-800px) rotateY(90deg);
+    opacity: 0;
+  }
+  54% {
+    -webkit-transform: translateZ(-160px) rotateY(87deg);
+            transform: translateZ(-160px) rotateY(87deg);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateZ(0) rotateY(0);
+            transform: translateZ(0) rotateY(0);
+  }
+}
+
+/*---------------#region Alert--------------- */
+
+#dialogoverlay{
+  display: none;
+  opacity: .8;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background: #707070;
+  width: 100%;
+  z-index: 10;
+}
+
+#dialogbox{
+  display: none;
+  position: absolute;
+  background: rgb(0, 47, 43);
+  border-radius:7px; 
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.575);
+  transition: 0.3s;
+  width: 60%;
+  z-index: 10;
+  top:0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+#dialogbox:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.911);
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+.pure-material-button-contained {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 4px;
+  padding: 0 16px;
+  min-width: 64px;
+  height: 36px;
+  vertical-align: middle;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+  background-color: rgb(var(--pure-material-primary-rgb, 0, 77, 70));
+  /* background-color: rgb(1, 47, 61) */
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.pure-material-button-contained::-moz-focus-inner {
+  border: none;
+}
+
+/* ---------------Overlay--------------- */
+
+.pure-material-button-contained::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* Ripple */
+.pure-material-button-contained::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  padding: 50%;
+  width: 32px; /* Safari */
+  height: 32px; /* Safari */
+  background-color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1);
+  transition: opacity 1s, transform 0.5s;
+}
+
+/* Hover, Focus */
+.pure-material-button-contained:hover,
+.pure-material-button-contained:focus {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.pure-material-button-contained:hover::before {
+  opacity: 0.08;
+}
+
+.pure-material-button-contained:focus::before {
+  opacity: 0.24;
+}
+
+.pure-material-button-contained:hover:focus::before {
+  opacity: 0.3;
+}
+
+/* Active */
+.pure-material-button-contained:active {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.pure-material-button-contained:active::after {
+  opacity: 0.32;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0s;
+}
+
+/* Disabled */
+.pure-material-button-contained:disabled {
+  color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+  background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.12);
+  box-shadow: none;
+  cursor: initial;
+}
+
+.pure-material-button-contained:disabled::before {
+  opacity: 0;
+}
+
+.pure-material-button-contained:disabled::after {
+  opacity: 0;
+}
+
+#dialogbox > div{ 
+  background:#FFF; 
+  margin:8px; 
+}
+
+#dialogbox > div > #dialogboxhead{ 
+  background: rgb(0, 77, 70); 
+  font-size:19px; 
+  padding:10px; 
+  color:rgb(255, 255, 255); 
+  font-family: Verdana, Geneva, Tahoma, sans-serif ;
+}
+
+#dialogbox > div > #dialogboxbody{ 
+  background:rgb(0, 47, 43); 
+  padding:20px; 
+  color:#FFF; 
+  font-family: Verdana, Geneva, Tahoma, sans-serif ;
+}
+
+#dialogbox > div > #dialogboxfoot{ 
+  background: rgb(0, 47, 43); 
+  padding:10px; 
+  text-align:right; 
+}
+/*#endregion Alert*/
+    #overlay{
+      position: fixed;
+      top: 0;
+      z-index: 0;
+      width: 24%;
+      height:0%;
+      display: none;
+      background: rgba(0,0,0,0.6);
+    }
+    .cv-spinner {
+      height: 1400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px #ddd solid;
+      border-top: 4px #2e93e6 solid;
+      border-radius: 50%;
+      animation: sp-anime 0.8s infinite linear;
+      
+    }
+    @keyframes sp-anime {
+      100% { 
+        transform: rotate(360deg); 
       }
-      #overlay{	
-        position: fixed;
-        top: 0;
-        z-index: 100;
-        width: 100%;
-        height:100%;
-        display: none;
-        background: rgba(0,0,0,0.6);
-      }
-      .cv-spinner {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;  
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px #ddd solid;
-        border-top: 4px #2e93e6 solid;
+    }
+    .is-hide{
+      display:none;
+    }
+    
+
+  </style>
+  <style>
+    body {
+       background-color: #3e6b61;
+    }
+
+    .is-typing {
+       margin-top: 90px;
+       width: 85px;
+       justify-content: space-around;
+       display: flex;
+    }
+
+    .jump1,
+    .jump2,
+    .jump3,
+    .jump4,
+    .jump5 {
+       width: 10px;
+       height: 10px;
+       border-radius: 100%;
+       background-color: gray;
+    }
+
+    .jump1 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.1s;
+    }
+
+    .jump2 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.2s;
+    }
+
+    .jump3 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.3s;
+    }
+
+    .jump4 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 01.4s;
+    }
+
+    .jump5 {
+       animation: typing 1.5s linear infinite;
+       animation-delay: 1.5s;
+    }
+
+  @keyframes typing {
+   0% {
+      transform: translateY(0px);
+   }
+
+   25% {
+      transform: translateY(0px);
+   }
+
+   35% {
+      transform: translateY(15px);
+   }
+
+   45% {
+      transform: translateY(0px);
+   }
+
+   60% {
+      transform: translateY(-15px);
+   }
+
+   75% {
+        background-color: white;
+      transform: translateY(0px);
+   }
+
+   100% {
+      transform: translateY(0px);
+   }
+}
+ </style>
+  <style>
+    #typing-indicator {
+      $ti-color-bg: #E6E7ED;
+      background-color: $ti-color-bg;
+      will-change: transform;
+      width: auto;
+      border-radius: 50px;
+      padding: 20px;
+      display: table;
+      margin: 0 auto;
+      position: relative;
+      animation: 2s bulge infinite ease-out;
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: -2px;
+        height: 20px;
+        width: 20px;
         border-radius: 50%;
-        animation: sp-anime 0.8s infinite linear;
+        background-color: $ti-color-bg;
       }
-      @keyframes sp-anime {
-        100% { 
-          transform: rotate(360deg); 
-        }
+      &::after {
+        height: 10px;
+        width: 10px;
+        left: -10px;
+        bottom: -10px;
       }
       .is-hide{
         display:none;
       }
+      span {
+        height: 15px;
+        width: 15px;
+        float: left;
+        margin: 0 1px;
+        background-color: #9E9EA1;
+        display: block;
+        border-radius: 50%;
+        opacity: 0.4;
+        @for $i from 1 through 3 {
+          &:nth-of-type(#{$i}) {
+            animation: 1s blink infinite ($i * .3333s);
+          }
+        }
+      }
+    }
     
-</style>
-<body>
-    <section style="background-color: #eee;">
-        <div class="container py-5">
-      
-          <div class="row d-flex justify-content-center">
-            <div class="col-md-8 col-lg-6 col-xl-4">
-      
-              <div class="card" id="chat1" style="border-radius: 15px;">
-                <div
-                  class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
-                  style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                  <p class="mb-0 fw-bold">AbbAiBot</p>
-                  <i class="fas fa-times"></i>
-                </div>
-                <div class="card-body">
-      
-                  
-      
-                  <div class="d-flex flex-row justify-content-start mb-4" id="">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                      alt="avatar 1" style="width: 45px; height: 100%;">
-                    <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                      <p class="small mb-0" id="input" >Send me your questions ...</p>
-                    </div>
-                  </div>
-      
-                    <form class="form-outline" role="form">
-                    <textarea id="inputUsername" class="form-control" name="questions"  rows="4"></textarea>
-                    <label class="form-label" for="textAreaExample">Type your message</label>
-                  </div>
-                  <button class="btn btn-lg btn-primary btn-block" type="button">Send</button>
-                  <form>
-              </div>
-      
-            </div>
-          </div>
-      
-        </div>
-        <div id="overlay">
-            <div class="cv-spinner">
-              <span class="spinner"></span>
-            </div>
-          </div>
-      </section>
+    @keyframes blink {
+      50% {
+        opacity: 1;
+      }
+    }
     
-    {% comment %} <form class="form-signin"  role="form">
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-        <input type="text" id="inputUsername" name="questions" class="form-control" placeholder="questions" required autofocus size="100">
-        <button class="btn btn-lg btn-primary btn-block" type="button">button</button>
-		</form>    {% endcomment %}
-    <script>
-        $(function(){
-            $(document).ajaxSend(function() {
-                $("#overlay").fadeIn(300);　
-              });
-            
-            $('button').click(function(){
-                var questions = $('#inputUsername').val();
-                var pass = $('#inputPassword').val();
-                $.ajax({
-                    headers: {
-                        "Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"
-                      },
-                    url: 'http://3.72.77.23:8080/api',
-                    data: $('form').serialize(),
-                    type: 'POST',
-                    success: function(data){
-                        var data2 = JSON.parse(data);
-                        document.getElementById('input').innerHTML = data2.message;
-                    }
-                  }).done(function() {
-                    setTimeout(function(){
-                      $("#overlay").fadeOut(300);
-                    },500);
-                  });
-                });	
-                
-        });
-        {% comment %} function login() {
-            // Form fields, see IDs above
-            var data = new FormData();
-            const params = {
-                questions: document.querySelector('#questions').value,
-            }
-            data.append("question","saal")
-    
-            const http = new XMLHttpRequest()
-            http.open('POST', 'http://3.72.77.23:8080/api',true)
-            http.setRequestHeader('Token', "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv")
-            http.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-            http.send(JSON.stringify(params)) 
-            http.onload = function() {
-                // Do whatever with response
-                alert(http.responseText)
-            }
-        } {% endcomment %}
-    </script>
-    <script>
-        $body = $("body");
+    @keyframes bulge {
+      50% {
+        transform: scale(1.05);
+      }
+    }
 
-$(document).on({
-    ajaxStart: function() { $body.addClass("loading");    },
-     ajaxStop: function() { $body.removeClass("loading"); }    
-});
-    </script>
-    <script
-  type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
-></script>
+  </style>
+<body>
+  <!-- Layout -->
+  <div class="layout">
+    {% include "navbar.html" %}
+    {% include "sidebar.html" %}
+    {% include "chat.html" %}
+  </div>
+  {% include "js.html" %}
+
+  
+  
+
 </body>
+<script>
+
+</script>
+<script>
+  function alert(title, content) {
+  var alertContent = `
+    <div class="modal__overlay verdana">
+      <div class="modal__window">
+        <div class="modal__titlebar">
+          <span class="modal__title">${title}</span>                        
+          <button class="modal__close">X</button>                    
+        </div>                     
+        <div class="modal__content">${content}</div>
+      </div>
+    </div>`
+  var dialogBox = document.createElement("div");
+  dialogBox.innerHTML = alertContent;
+  document.body.appendChild(dialogBox); // actually append it
+}
+  $(function(){
+      $(document).ajaxSend(function() {
+          $("#overlay").fadeIn(300);　
+        });
+      
+      $('#sendButton').click(function(){
+          var questions = $('#inputUsername').val();
+          console.log(questions)
+          var pass = $('#inputPassword').val();
+          
+
+          $("#pills-tab li").click(function() {
+            if (!$(this).hasClass("active")) {
+              $("#pills-tab li.active").removeClass("active")
+              $(this).addClass("active")
+              console.log($(this).find("a").html())
+            }
+          })
+          var html2 = 
+          `
+                  <div class="message self">
+                    <div class="message-wrap">
+                        <div class="message-item">
+                            <div class="message-content">
+                                <span>${questions}</span>
+                            </div>
+                          
+                        </div>
+                      
+                    </div>
+                    <div class="message-info">
+                       
+                    </div>
+                </div>
+                  `
+          
+          $('#content-loader').append( html2 );
+          
+          
+          $.ajax({
+              headers: {
+                  "Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"
+                },
+              url: "{% url 'save' %}",
+              data: $('form').serialize(),
+              datatype: 'json',
+              
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              type: 'POST',
+              success: function(data){
+                  console.log(data)
+                  var data2 = data
+                 
+                  var html = 
+                  `
+                  <div class="message">
+                    <div class="message-wrap">
+                        <div class="message-item">
+                            <div class="message-content">
+                                <span id="input">${data2.message} :  <a target="_blank" rel="noopener noreferrer" href=${data2.link}> Ətrafli məlumat üçün click edin </a></span>
+                            </div>
+                         
+                        </div>
+                    </div>
+                    <div class="message-info">
+                        <div class="avatar avatar-sm">
+                            <span class="avatar-label bg-soft-primary text-primary fs-6">AB</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">ABB Aikhan</h6>
+                            <small class="text-muted">
+                                {% comment %} <i class="ri-check-double-line align-bottom text-success fs-5"></i> {% endcomment %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                  `
+                  ;
+                $('#content-loader').append( html );
+              }
+            }).done(function() {
+              setTimeout(function(){
+                $("#overlay").fadeOut(300);
+              },500);
+            });
+          });	
+          
+  });
+</script>
+<script>
+  function CustomAlert(){
+    this.alert = function(message,title){
+      document.body.innerHTML = document.body.innerHTML + '<div id="dialogoverlay"></div><div id="dialogbox" class="slit-in-vertical"><div><div id="dialogboxhead"></div><div id="dialogboxbody"></div><div id="dialogboxfoot"></div></div><div id="dialogboxfoot2"></div></div></div>';
+  
+      let dialogoverlay = document.getElementById('dialogoverlay');
+      let dialogbox = document.getElementById('dialogbox');
+      
+      let winH = window.innerHeight;
+      dialogoverlay.style.height = winH+"px";
+      
+      dialogbox.style.top = "300px";
+      dialogoverlay.style.background = "#00ffff00";
+      dialogoverlay.style.display = "block";
+      dialogbox.style.display = "block";
+
+      
+      document.getElementById('dialogboxhead').style.display = 'block';
+  
+      if(typeof title === 'undefined') {
+        document.getElementById('dialogboxhead').style.display = 'none';
+      } else {
+        document.getElementById('dialogboxhead').innerHTML = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i> '+ title;
+      }
+      document.getElementById('dialogboxbody').innerHTML = message;
+      document.getElementById('dialogboxfoot').innerHTML = '<button class="pure-material-button-contained active" onclick="customAlert.ok()">Bəli</button>';
+    }
+    
+    this.ok = function(){
+      document.getElementById('dialogbox').style.display = "none";
+      document.getElementById('dialogoverlay').style.display = "none";
+    }
+  }
+  
+  let customAlert = new CustomAlert();
+  var i = 0,
+  cart = {
+    car: 1,
+   
+  },
+  arr = Object.keys(cart);
+
+
+
+</script>
+
+<script>
+  function debounce(callback, timeout, _this) {
+    var timer;
+    return function(e) {
+        var _that = this;
+        if (timer)
+            clearTimeout(timer);
+        timer = setTimeout(function() { 
+            callback.call(_this || _that, e);
+        }, timeout);
+    }
+}
+
+
+document.addEventListener("mousemove", userAction, false);
+document.addEventListener("click", userAction, false);
+document.addEventListener("scroll", userAction, false);
+</script>
+
+<script>
+  
+  $body = $("body");
+
+    $(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+    ajaxStop: function() { $body.removeClass("loading"); }    
+    });
+    </script>
+    
+    <script>
+    var input = document.getElementById("inputUsername");
+
+    input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("myBtn").click();
+    }
+    });
+    </script>
+    <script>
+      
+    $('button_clear').click(function(){
+        $('.clearable').clearSearch()
+        });	
+</script>
+<script>
+  console.log($(this).find("a").html())
+</script>
 </html>
