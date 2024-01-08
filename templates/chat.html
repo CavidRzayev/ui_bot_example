@@ -3,7 +3,7 @@
         <!-- Chat -->
         <div class="chat-body h-100 w-100 d-flex flex-column">
             <!-- Chat Header -->
-            <div class="chat-header d-flex align-items-center border-bottom px-2">
+            <div class="chat-header d-flex align-items-center border-bottom px-2" style="    min-height: 2.5rem;">
                 <div class="container-fluid">
                     <div class="row align-items-center g-0">
                         <div class="col-8 col-sm-5">
@@ -107,7 +107,7 @@
             <!-- Chat Search -->
 
             <!-- Chat Content -->
-            <div class="chat-content hide-scrollbar h-100">
+            <div class="chat-content hide-scrollbar h-100" id="chat-content">
                 <!-- Messages -->
                 <div class="container-fluid g-0 p-4" id="content-loader">
                     <!-- Message 1 -->
@@ -208,9 +208,9 @@
 
             <!-- Chat Footer -->
             
-            <br>
-            <br>
-            <br>
+            
+            
+            
             {% if data.status %}
             <div class="chat-footer d-flex align-items-center border-top px-2">
                 <div class="container-fluid">
@@ -234,7 +234,7 @@
                         <div class="col-auto">
                             <ul class="list-inline d-flex align-items-center mb-0">
                                 <li class="list-inline-item">
-                                    <button type="submit" id="sendButton" class="sendButton btn btn-icon btn-primary btn-lg">
+                                    <button type="submit"  id="sendButton" class="sendButton btn btn-icon btn-primary btn-lg">
                                         <i class="ri-send-plane-fill"></i>
                                     </button>
                                 </li>

@@ -5,7 +5,7 @@ from datetime import datetime
 from .models import Message,BaseModels
 import requests
 import openai
-openai.api_key = "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"
+openai.api_key = "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"
 
 def index(request):
     if request.user.is_authenticated:pass

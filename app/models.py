@@ -9,7 +9,7 @@ class BaseModels(models.Model):
     status = models.BooleanField(default=False,blank=True,null=True)
 
     def __str__(self) -> str:
-        return str(self.date)
+        return "{} - {}".format(self.user.email,str(self.date))
 
 
 class Message(models.Model):

@@ -31,15 +31,17 @@ def register(request):
                 if password == current_password:
                     check_email = user.split("@")
                     print(check_email)
-                    if check_email[1] == "gmail.com":
-                        user = User.objects.create(email=user,password=password)
+                    if check_email[1] == "abb-bank.az":
+                        user = User.objects.create(email=user,password=password,is_verify=True)
                         user.set_password(password)
                         user.save()
-                        text = f"http://ai.abb-bank.az:8888/auth/verify?email={user.email}"
-                        messages.success(request, "User successfully created please verify your email")
-                        send_emil = send_mail('Verify your email', f'Please click the link : {text} ','abbaibot@yandex.ru',[f'{user.email}'],fail_silently=False)
-                        print(send_emil)
-                        return redirect("login")
+                        users = authenticate(email=user, password=password)
+                        login(request,users)
+                        #text = f"http://ai.abb-bank.az:8888/auth/verify?email={user.email}"
+                        #messages.success(request, "User successfully created please verify your email")
+                        #send_emil = send_mail('Verify your email', f'Please click the link : {text} ','abbaibot@yandex.ru',[f'{user.email}'],fail_silently=False)
+                        #print(send_emil)
+                        return redirect("index")
                     else:
                         messages.info(request, "Only Abb User")
 

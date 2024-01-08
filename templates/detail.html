@@ -16,7 +16,7 @@
       background: rgba(0,0,0,0.6);
     }
     .cv-spinner {
-      height: 1400px;
+      height: 1000px;
       display: flex;
       justify-content: center;
       align-items: center;  
@@ -265,6 +265,8 @@
       $('#sendButton').click(function(){
           var questions = $('#inputUsername').val();
           console.log(questions)
+          
+   
           var pass = $('#inputPassword').val();
           $("#pills-tab li").click(function() {
             if (!$(this).hasClass("active")) {
@@ -293,7 +295,7 @@
           
           $('#content-loader').append( html2 );
           
-          
+          document.getElementById('content-loader').scrollIntoView(false);
           $.ajax({
               headers: {
                   "Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"
@@ -314,7 +316,7 @@
                     <div class="message-wrap">
                         <div class="message-item">
                             <div class="message-content">
-                                <span id="input">${data2.message} :  <a target="_blank" rel="noopener noreferrer" href=${data2.link}> Ətrafli məlumat üçün click edin </a></span>
+                                <span id="input">${data2.message} </span>
                             </div>
                          
                         </div>
@@ -336,6 +338,8 @@
                 $('#content-loader').append( html );
               }
             }).done(function() {
+              document.getElementById('content-loader').scrollIntoView(false);
+              document.getElementById("inputUsername").value = "";
               setTimeout(function(){
                 $("#overlay").fadeOut(300);
               },500);

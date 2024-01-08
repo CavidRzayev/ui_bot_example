@@ -1200,12 +1200,13 @@
                         <div class="alert alert-info" role="alert">
                             Aikhan daha öncədən ABB tərəfindən təqdim edilmiş sənədlər əsasında sizin suallarınıza cavab verir
                           </div>
+   {% comment %}
                           <form>
                         <select class="form-select" id="mySelect"  name = "doc" aria-label="Default select example">
                             <option selected>Sənəd seçin (Default olaraq bütün sənədlər) </option>
                             <option value="1">HR Document</option>
                             <option value="2">SME Document</option>
-                          </select>
+                          </select> {% endcomment %}
                           <br>
                           <div class="text-center">
                             <a href="{% url 'create_detail' %}" ><button type="button" class="chat-show btn btn-primary">Söhbətə başla</button></a>
