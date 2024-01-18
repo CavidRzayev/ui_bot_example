@@ -20,6 +20,10 @@ from app.views import index,save,gtp,detail,create_detail
 from django.conf import settings
 from django.conf.urls.static import static
 from user.views import login
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +32,16 @@ urlpatterns = [
     path("gtp/",gtp,name="gtp"),
     path("auth/",include("user.urls")),
     path("detail/<id>/",detail,name="detail"),
-    path("create/",create_detail,name="create_detail")
+    path("create/",create_detail,name="create_detail"),
+    path("logs/", include("logs.urls")),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "swagger/",
+        SpectacularSwaggerView.as_view(
+            template_name="swagger-ui.html", url_name="schema"
+        ),
+        name="swagger-ui",
+    ),
 ]
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
