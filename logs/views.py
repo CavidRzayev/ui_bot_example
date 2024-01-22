@@ -13,4 +13,4 @@ class AddLogAPIView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"message": "Got some data!", "data": request.data})
+        return Response({"message": "Transaction logged successfully!", "data": request.data})
