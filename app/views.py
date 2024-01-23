@@ -43,7 +43,7 @@ def save(request):
                 "questions":data,
                 "session":request.session.session_key
             }
-            url = "http://ai.abb-bank.az:8080/api/v1"
+            url = "http://localhost:8080/api/v1"
             header = {"Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"}
             response = requests.post(url,headers=header,json=query)
             print(response.content)
@@ -58,6 +58,36 @@ def save(request):
                 print(e)
             print(response.json())
             return JsonResponse({"message":response.json()["message"]})
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from app.serializers import StreamSerializer
+import json
+
+def parse_response(response):
+    # Extracting text from each data object
+    data_objects = [json.loads(obj.replace("data: ", ""))["text"] for obj in response.split("\r\n") if obj.startswith("data:")]
+
+    # Combining the extracted text
+    combined_text = ''.join(data_objects)
+
+    return combined_text
+
+
+class AskStreamAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = StreamSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        print(data)
+        url = "http://localhost:8585/api/v2/stream_chat/"
+        response = requests.post(url,json=data)
+
+        parse_response(response.text)
+        return JsonResponse({"message": "OK", "data": data, "response": parse_response(response.text)})
 
 
 @csrf_exempt

@@ -42,6 +42,7 @@ urlpatterns = [
         ),
         name="swagger-ui",
     ),
+    path("app/", include("app.urls")),
 ]
 if True:
     urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
