@@ -350,6 +350,25 @@
           
   });
 
+  function getEvent() {
+    fetch("http://3.72.64.128:8585/api/v2/stream_chat/", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "text/event-stream",
+              "accept": "application/json",
+              "X-CSRFToken": getCookie("csrftoken"),
+          },
+          body: JSON.stringify({
+              "content": "salam",
+          })
+      }).then(function(response) {
+          console.log(response);
+      }).catch(function(error) {
+          console.log(error);
+      });
+  };
+
   function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {
