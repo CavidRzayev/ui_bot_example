@@ -11,7 +11,7 @@ class Log(models.Model):
     num_of_input_tokens = models.IntegerField(null=True, blank=True)
     num_of_output_tokens = models.IntegerField(null=True, blank=True)
     model = models.CharField(max_length=1000, null=True, blank=True)
-    cost = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    cost = models.DecimalField(max_digits=40, decimal_places=5, null=True, blank=True)
     requested_at = models.DateTimeField(null=True, blank=True)
     multiquery_started_at = models.DateTimeField(null=True, blank=True)
     multiquery_ended_at = models.DateTimeField(null=True, blank=True)
