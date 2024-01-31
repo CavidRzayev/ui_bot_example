@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Log(models.Model):
     question = models.TextField(null=True, blank=True)
     answer = models.TextField(null=True, blank=True)
@@ -19,11 +20,13 @@ class Log(models.Model):
     llm_request_ended_at = models.DateTimeField(null=True, blank=True)
     llm_response_started_at = models.DateTimeField(null=True, blank=True)
     llm_response_ended_at = models.DateTimeField(null=True, blank=True)
+    is_cached = models.BooleanField(default=False)
+    cache_ended_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.question
 
     class Meta:
-        verbose_name_plural = 'Logs'
-        ordering = ('-created_at',)
+        verbose_name_plural = "Logs"
+        ordering = ("-created_at",)

@@ -32,32 +32,24 @@ def save(request):
         request.session.create()
     if request.method == "POST":
         now = datetime.now().time()
-        data = request.POST.get("questions")
-        path = request.POST.get("path").strip("/detail/")
-        if len(data) == 0:redirect("index")
-        else:
-            message =  Message()
-            message.session_id = request.session.session_key
-            message.quesion = data
-            query = {
-                "questions":data,
-                "session":request.session.session_key
-            }
-            url = "http://localhost:8080/api/v1"
-            header = {"Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"}
-            response = requests.post(url,headers=header,json=query)
-            print(response.content)
-            message.answer = response.json()["message"]
-            message.user  = request.user
-            message.save()
-            try:
-                base = BaseModels.objects.get(id=path)
-                base.message.add(message)
-                base.save()
-            except Exception as e:
-                print(e)
-            print(response.json())
-            return JsonResponse({"message":response.json()["message"]})
+        data = request.POST.get("content")
+        try:
+            if len(data) == 0:redirect("index")
+            else:
+        
+                query = {
+                   "content":data,
+               }
+                url = "http://3.72.64.128:8585/api/v2/stream_chat/"
+                header = {"Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"}
+                response = requests.post(url,headers=header,json=query)
+                print(response.content)
+
+   
+                return JsonResponse({"message": "OK", "data": data, "response": parse_response(response.text)})
+        except Exception as e:
+            print(e)
+            return JsonResponse({"message": "Error", "error": str(e)})
 
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -74,21 +66,31 @@ def parse_response(response):
     return combined_text
 
 
+
+
+def stream_data(request):
+    data = request.POST.get("questions")
+
+
+
 class AskStreamAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = StreamSerializer
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-        print(data)
-        url = "http://localhost:8585/api/v2/stream_chat/"
-        response = requests.post(url,json=data)
-
-        parse_response(response.text)
-        return JsonResponse({"message": "OK", "data": data, "response": parse_response(response.text)})
-
+        try:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            data = serializer.validated_data
+            print(data)
+            url = "http://3.72.64.128:8585/api/v2/stream_chat/"
+            header = {"Token": "r8uuwR07fZplje68Li1yQ8wjuXypGEKOTshGGmMFGpuAq5DDvG2FIZDGPIzaobuifDf7O1mjlASfIby2iU1zq2rSIm5krGTUBHMuFRQGix5OrcuEeW9r6yfRuPtYF4aeQldhipCbiW6FL1V84gb5gPu7kg6sCbWge09I46QbLo0rcsjzLMvwJRW8Dv"}
+            response = requests.post(url,json=data,headers=header)
+            print(parse_response(response.text))
+            return JsonResponse({"message": "OK", "data": data, "response": parse_response(response.text)})
+        except Exception as e:
+            print(e)
+            return JsonResponse({"message": "Error", "error": str(e)})
 
 @csrf_exempt
 def gtp(request):
@@ -146,5 +148,3 @@ def detail(request,id):
 def create_detail(request):
     create = BaseModels.objects.create(user=request.user,status=True)
     return redirect("detail",create.id)
-
-

@@ -1,6 +1,9 @@
-from app.views import AskStreamAPIView
+from app.views import *
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 urlpatterns = [
-    path("ask_stream/", AskStreamAPIView.as_view(), name="ask_stream"),
+    path("ask_stream/", save,name="ask_stream"),
 ]

@@ -43,7 +43,7 @@ def register(request):
                         #print(send_emil)
                         return redirect("index")
                     else:
-                        messages.info(request, "Only Abb User")
+                        messages.info(request, "Only User")
 
                 else:
                     messages.warning(request, "Password or current password incorrect!")
